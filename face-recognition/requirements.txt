@@ -1,0 +1,6 @@
+google-cloud-storage
+google-cloud-vision
+face_recognition
+opencv-python
+numpy
+
