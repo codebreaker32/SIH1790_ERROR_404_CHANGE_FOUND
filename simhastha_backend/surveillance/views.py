@@ -13,6 +13,7 @@ from .models import Report, StaffUser, ReportMatch
 from .serializers import ReportSerializer, StaffUserLoginSerializer, ReportUpdateSerializer, UserRegistrationSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
+from .twilio_sms_send import send_sms_notification
 
 # Logging current time for debugging
 logging.info(f"Current Time: {timezone.now()}")
@@ -219,44 +220,36 @@ class ReportDetailAPIView(APIView):
 
 
 class UpdateReportStatusAPIView(APIView):
-    """
-    Update the status of a report and handle matches. Staff can mark as 'Match Found'
-    or append new match data using this endpoint.
-    """
     permission_classes = [IsAuthenticated]
 
     def post(self, request, report_id):
-        # Retrieve the report instance
         report = get_object_or_404(Report, report_id=report_id)
+        location = request.data.get('location', "Webcam for Now")
+        match_data = request.data.get('match_data', {})
 
-        # Extract data from request (location and match data are optional for now)
-        location = request.data.get('location', None)
-        match_data = request.data.get('match_data', {})  # Leave as blank if not provided
-
-        # Set the report status to "Match Found"
         report.status = 'Found'
-        report.save()  # This will trigger the signal to notify staff users
-        
-        # Check if a ReportMatch already exists for the report
+        report.save()
+
         try:
             report_match, created = ReportMatch.objects.get_or_create(report=report)
-
-            # If new match data or location is provided, append/update it
             if match_data or location:
                 report_match.append_match_data(new_data=match_data, location=location)
             else:
-                # If no new data is provided, just update the timestamp
                 report_match.timestamp = timezone.now()
                 report_match.save()
-
         except Exception as e:
             logging.error(f"Error creating or updating ReportMatch: {e}")
             return Response({'error': 'Failed to update match data'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        # Response after successful match update and status change
+        # Notify all verified staff users about the match found
+        verified_staff = StaffUser.objects.filter(is_verified=True)
+        for staff_user in verified_staff:
+            staff_user.signal_found_person(report)
+
         return Response({
             'message': 'Match found, report status updated. Staff will be notified.'
         }, status=status.HTTP_200_OK)
+
 
 
 class CreateReportAPIView(APIView):

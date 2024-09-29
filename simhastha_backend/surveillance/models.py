@@ -3,6 +3,8 @@ from django.utils import timezone
 from datetime import timedelta
 from django.contrib.auth.models import User
 import uuid
+from twilio.rest import Client
+from django.conf import settings
 
 class public_user(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
@@ -122,21 +124,17 @@ class StaffUser(models.Model):
         return f"{self.user.username} - Staff"
 
     def signal_found_person(self, report):
-        """
-        Send a notification (SMS) to the user when a match is found.
-        """
-        if self.notification_preference == 'SMS':
+        if self.notification_preference == 'SMS' and self.is_verified:
             self.send_sms_notification(report)
 
     def send_sms_notification(self, report):
-        """
-        Sends an SMS notification to the user about the found person/item.
-        You need to integrate this with an actual SMS service like Twilio.
-        """
+        client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
         message = (
             f"Match Found for Report ID: {report.report_id}. "
-            f"Type: {report.report_type}, Location: {report.location}."
+            f"Type: {report.report_type}, Location: {report.match.location}."
         )
-        print(f"Sending SMS to {self.phone_number}: {message}")
-        # Integrate with an SMS API like Twilio to send the SMS
-
+        client.messages.create(
+            body=message,
+            from_=settings.TWILIO_PHONE_NUMBER,
+            to=self.phone_number
+        )

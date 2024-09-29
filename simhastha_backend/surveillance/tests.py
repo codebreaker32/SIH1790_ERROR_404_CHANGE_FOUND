@@ -1,3 +1,4 @@
+
 import redis
 
 # Create a Redis connection (ensure Redis is running on the specified host/port)
