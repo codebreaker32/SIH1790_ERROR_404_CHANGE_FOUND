@@ -108,7 +108,7 @@ class Report(models.Model):
                 additional_data=match_data
             )
             # Update report status to "Match Found"
-            self.status = "Match Found"
+            self.status = "Found"
             self.save()
 
 

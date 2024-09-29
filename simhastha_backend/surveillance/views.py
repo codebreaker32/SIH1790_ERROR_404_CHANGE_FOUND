@@ -234,7 +234,7 @@ class UpdateReportStatusAPIView(APIView):
         match_data = request.data.get('match_data', {})  # Leave as blank if not provided
 
         # Set the report status to "Match Found"
-        report.status = 'Match Found'
+        report.status = 'Found'
         report.save()  # This will trigger the signal to notify staff users
         
         # Check if a ReportMatch already exists for the report

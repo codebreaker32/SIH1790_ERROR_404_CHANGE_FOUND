@@ -23,13 +23,14 @@ def send_otp(phone_number):
     r.setex(f"otp_{phone_number}_created", expiry_time, otp_created_at)
 
     # Send the OTP using 2Factor API
-    url = f"https://2factor.in/API/V1/{api_key}/SMS/{phone_number}/{otp}/AUTOGEN"
+    # url = f"https://2factor.in/API/V1/{api_key}/SMS/{phone_number}/{otp}/AUTOGEN"
     
-    response = requests.get(url)
-    if response.status_code == 200:
-        return otp  # Success
-    else:
-        raise Exception(f"Failed to send OTP: {response.text}")
+    # response = requests.get(url)
+    # if response.status_code == 200:
+    #     return otp  # Success
+    # else:
+    #     raise Exception(f"Failed to send OTP: {response.text}")
+    return otp
 
 def verify_otp(phone_number, otp_entered):
     # Retrieve OTP and created time from Redis

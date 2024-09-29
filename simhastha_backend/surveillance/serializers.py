@@ -114,8 +114,8 @@ class ReportUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Report
         # Reflecting the fields that can be updated
-        fields = ['report_type', 'name', 'age', 'gender', 'description', 'last_seen_location', 'image']
-        read_only_fields = ['report_id']  # Keep report_id read-only to prevent modification
+        fields = ['report_id', 'user', 'report_type', 'image','name', 'age', 'gender', 'description', 'last_seen_location', 'status', 'timestamp']
+        read_only_fields = ['report_id', 'timestamp']
 
 # Serializer for the landing page (Public User Report)
 class PublicUserLandingPageSerializer(serializers.Serializer):

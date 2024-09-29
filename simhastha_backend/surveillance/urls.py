@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import SendOtpView, VerifyOtpView, PublicUserLandingPageView, Get_live_time, UserRegistrationView
+from .views import SendOtpView, VerifyOtpView, PublicUserLandingPageView, Get_live_time, UserRegistrationView, UserLogoutView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -29,4 +29,8 @@ urlpatterns += [
     path('staff/reports/<str:report_id>/', ReportDetailAPIView.as_view(), name='report_detail'),
     path('staff/reports/update-status/<str:report_id>/', UpdateReportStatusAPIView.as_view(), name='update_report_status'),
     path('staff/reports/create/', CreateReportAPIView.as_view(), name='create_report'),
+]
+
+urlpatterns += [
+    path('logout/', UserLogoutView.as_view(), name='logout'),
 ]
