@@ -5,7 +5,7 @@ import face_recognition
 from google.cloud import storage
 
 # Set up Google Cloud Storage
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r'key.json'  # Update this path
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r'C:\Users\anni1\OneDrive\Desktop\face_recognition\face-recognition\key.json'  # Update this path
 
 bucket_name = "face-recognition-sih1790"
 encoded_images_file = "encoded-images.json"

@@ -8,7 +8,7 @@ import face_recognition
 import subprocess 
 
 # Set the environment variable for Google Cloud Vision API key
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"key.json"  # Replace with your file path
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\anni1\OneDrive\Desktop\face_recognition\face-recognition\key.json"  # Replace with your file path
 
 # Initialize Google Cloud Vision client
 client = vision.ImageAnnotatorClient()
