@@ -2,12 +2,16 @@ from pathlib import Path
 import os
 from datetime import timedelta
 from decouple import config
+from google.oauth2 import service_account
+
+# Google Cloud Storage settings
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY')  # Load from .env
 DEBUG = config('DEBUG', default=True, cast=bool)  # set to False in production
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='').split(',')  # Load from .env
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -23,7 +27,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
     
-    'surveillance',
+    'surveillance', 
+    'storages',
 ]
 
 ASGI_APPLICATION = 'simhastha.asgi.application'
@@ -88,8 +93,48 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# store image on google cloud storage
+
+GOOGLE_APPLICATION_CREDENTIALS = config('GOOGLE_APPLICATION_CREDENTIALS', default=os.path.join(BASE_DIR, 'simhastha_backend', 'keys', 'keys.json'))
+# GOOGLE_APPLICATION_CREDENTIALS = r"C:\Users\Anshuman Raj\OneDrive\Desktop\final_ps_1790\simhastha_backend\keys\keys.json"
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    GOOGLE_APPLICATION_CREDENTIALS
+)
+
+DEFAULT_FILE_STORAGE = 'simhastha_backend.gcloud.GoogleCloudMediaFileStorage'
+GS_PROJECT_ID = config('GS_PROJECT_ID')  # Google Cloud project ID
+GS_BUCKET_NAME = config('GS_BUCKET_NAME')  # Bucket name in Google Cloud
+MEDIA_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/"
+# MEDIA_ROOT can be kept if you still store some files locally
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+UPLOAD_ROOT = os.path.join(BASE_DIR, 'media/reports/')  # Optional local upload path
+
+
+# MEDIA_URL = '/media/'
+
+# GOOGLE_APPLICATION_CREDENTIALS = os.path.join(BASE_DIR, 'simhastha_backend/keys/keys.json')
+# GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+#     GOOGLE_APPLICATION_CREDENTIALS
+# )
+
+
+# DEFAULT_FILE_STORAGE = 'simhastha_backend.gcloud.GoogleCloudMediaFileStorage'
+# # GS_DEFAULT_ACL = 'publicRead'  # Optional: set the access control
+# GS_PROJECT_ID = config('GS_PROJECT_ID')  # Google Cloud project ID
+# GS_BUCKET_NAME = config('GS_BUCKET_NAME')  # Bucket name in Google Cloud
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+# UPLOAD_ROOT = os.path.join(BASE_DIR, 'media/reports/')
+# MEDIA_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/"
+
+
+
+
+# If you have static files to be served from GCS
+# STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+# STATIC_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/static/"
+
+ 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

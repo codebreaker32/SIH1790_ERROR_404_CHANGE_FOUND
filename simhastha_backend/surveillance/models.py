@@ -28,9 +28,9 @@ class public_user(models.Model):
 
 class ReportMatch(models.Model):
     report = models.OneToOneField('Report', on_delete=models.CASCADE, related_name="match")
-    location = models.CharField(max_length=255)  # Location where the person/item was detected
+    location = models.CharField(max_length=255, null = True, blank=True)  # Location where the person/item was detected
     timestamp = models.DateTimeField(default=timezone.now)  # Time when the match was detected
-    additional_data = models.JSONField(default=dict)  # Store additional data as a JSON field
+    additional_data = models.JSONField(default=dict, null = True, blank=True)  # Store additional data as a JSON field
 
     def __str__(self):
         return f"Match for {self.report.report_id} at {self.location} on {self.timestamp}"

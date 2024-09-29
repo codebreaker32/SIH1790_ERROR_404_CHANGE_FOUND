@@ -14,7 +14,6 @@ from .serializers import ReportSerializer, StaffUserLoginSerializer, ReportUpdat
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 
-
 # Logging current time for debugging
 logging.info(f"Current Time: {timezone.now()}")
 
@@ -227,30 +226,37 @@ class UpdateReportStatusAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, report_id):
+        # Retrieve the report instance
         report = get_object_or_404(Report, report_id=report_id)
 
-        # Extract data from request for match update (location, additional data, etc.)
-        location = request.data.get('location')
-        match_data = request.data.get('match_data', {})
+        # Extract data from request (location and match data are optional for now)
+        location = request.data.get('location', None)
+        match_data = request.data.get('match_data', {})  # Leave as blank if not provided
 
-        # If no location is provided, return an error
-        if not location:
-            return Response({'error': 'Location is required for match update'}, status=status.HTTP_400_BAD_REQUEST)
+        # Set the report status to "Match Found"
+        report.status = 'Match Found'
+        report.save()  # This will trigger the signal to notify staff users
         
-        # Add or update the match data in the report (creates if it doesn't exist, appends otherwise)
+        # Check if a ReportMatch already exists for the report
         try:
-            report.add_or_update_match(location=location, match_data=match_data)
+            report_match, created = ReportMatch.objects.get_or_create(report=report)
+
+            # If new match data or location is provided, append/update it
+            if match_data or location:
+                report_match.append_match_data(new_data=match_data, location=location)
+            else:
+                # If no new data is provided, just update the timestamp
+                report_match.timestamp = timezone.now()
+                report_match.save()
+
         except Exception as e:
-            logging.error(f"Error updating match data: {e}")
+            logging.error(f"Error creating or updating ReportMatch: {e}")
             return Response({'error': 'Failed to update match data'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
-        # Notify the user (through SMS or other means)
-        try:
-            request.user.staff_profile.signal_found_person(report)
-            return Response({'message': 'Report status updated, match data saved, and staff user notified'}, status=status.HTTP_200_OK)
-        except Exception as e:
-            logging.error(f"Error notifying user: {e}")
-            return Response({'error': 'Failed to notify staff user'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        # Response after successful match update and status change
+        return Response({
+            'message': 'Match found, report status updated. Staff will be notified.'
+        }, status=status.HTTP_200_OK)
 
 
 class CreateReportAPIView(APIView):

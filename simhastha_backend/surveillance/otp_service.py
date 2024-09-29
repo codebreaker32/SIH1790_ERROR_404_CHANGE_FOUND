@@ -12,7 +12,7 @@ r = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=0)
 
 def send_otp(phone_number):
     # Get the API key from environment variables
-    api_key = config('API_KEY_2FACTOR', default='your_api_key_here')
+    api_key = config('API_KEY_2FACTOR', default='d9cdc6f2-7c35-11ef-8b17-0200cd936042')
     
     otp = random.randint(100000, 999999)  # Generate OTP
     expiry_time = 300  # 5 minutes in seconds
