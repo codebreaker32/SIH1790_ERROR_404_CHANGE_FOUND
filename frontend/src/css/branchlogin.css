@@ -1,0 +1,71 @@
+/* branchlogin.css */
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f0f2f5;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; 
+}
+
+.branch-login-container {
+  width: 100%;
+  max-width: 400px; 
+  margin: 0 auto;
+}
+
+.login-card {
+  background-color: #ffffff; 
+  border-radius: 12px; 
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 30px; 
+}
+
+h2 {
+  text-align: center;
+  color: #0062cc; 
+  margin-bottom: 20px; 
+}
+
+.input-group {
+  margin-bottom: 20px; 
+}
+
+label {
+  display: block;
+  margin-bottom: 8px; 
+  color: #333; 
+}
+
+input {
+  width: 100%;
+  padding: 12px; 
+  border: 1px solid #ddd; 
+  border-radius: 8px; 
+  font-size: 16px; 
+  transition: border-color 0.3s; 
+}
+
+input:focus {
+  border-color: #0062cc; 
+  outline: none;
+}
+
+.login-button {
+  width: 100%; 
+  padding: 12px; 
+  background-color: #0062cc; 
+  color: white;
+  border: none;
+  border-radius: 8px; 
+  font-size: 16px; 
+  cursor: pointer;
+  transition: background-color 0.3s; 
+}
+
+.login-button:hover {
+  background-color: #004b9a;
+}
