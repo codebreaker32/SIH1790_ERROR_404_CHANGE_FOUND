@@ -4,14 +4,11 @@ from datetime import timedelta
 from decouple import config
 from google.oauth2 import service_account
 
-# Google Cloud Storage settings
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = config('SECRET_KEY')  # Load from .env
-DEBUG = config('DEBUG', default=True, cast=bool)  # set to False in production
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='').split(',')  # Load from .env
-
+SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG', default=True, cast=bool)
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='').split(',')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -20,14 +17,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
     'rest_framework',
     'channels',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
-    
-    'surveillance', 
+    'surveillance',
     'storages',
 ]
 
@@ -37,7 +32,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [(config('REDIS_HOST', '127.0.0.1'), config('REDIS_PORT', cast=int, default=6379))],
+            'hosts': [(config('AZURE_REDIS_CONNECTIONSTRING').split('@')[1].split(':')[0], 6380)],
         },
     },
 }
@@ -74,8 +69,12 @@ WSGI_APPLICATION = 'simhastha_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': config('DB_ENGINE'),
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT'),
     }
 }
 
@@ -93,55 +92,22 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-
-# store image on google cloud storage
-
 GOOGLE_APPLICATION_CREDENTIALS = config('GOOGLE_APPLICATION_CREDENTIALS', default=os.path.join(BASE_DIR, 'simhastha_backend', 'keys', 'keys.json'))
-# GOOGLE_APPLICATION_CREDENTIALS = r"C:\Users\Anshuman Raj\OneDrive\Desktop\final_ps_1790\simhastha_backend\keys\keys.json"
-GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
-    GOOGLE_APPLICATION_CREDENTIALS
-)
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(GOOGLE_APPLICATION_CREDENTIALS)
 
 DEFAULT_FILE_STORAGE = 'simhastha_backend.gcloud.GoogleCloudMediaFileStorage'
-GS_PROJECT_ID = config('GS_PROJECT_ID')  # Google Cloud project ID
-GS_BUCKET_NAME = config('GS_BUCKET_NAME')  # Bucket name in Google Cloud
+GS_PROJECT_ID = config('GS_PROJECT_ID')
+GS_BUCKET_NAME = config('GS_BUCKET_NAME')
 MEDIA_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/"
-# MEDIA_ROOT can be kept if you still store some files locally
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-UPLOAD_ROOT = os.path.join(BASE_DIR, 'media/reports/')  # Optional local upload path
-
-
-# MEDIA_URL = '/media/'
-
-# GOOGLE_APPLICATION_CREDENTIALS = os.path.join(BASE_DIR, 'simhastha_backend/keys/keys.json')
-# GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
-#     GOOGLE_APPLICATION_CREDENTIALS
-# )
-
-
-# DEFAULT_FILE_STORAGE = 'simhastha_backend.gcloud.GoogleCloudMediaFileStorage'
-# # GS_DEFAULT_ACL = 'publicRead'  # Optional: set the access control
-# GS_PROJECT_ID = config('GS_PROJECT_ID')  # Google Cloud project ID
-# GS_BUCKET_NAME = config('GS_BUCKET_NAME')  # Bucket name in Google Cloud
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-# UPLOAD_ROOT = os.path.join(BASE_DIR, 'media/reports/')
-# MEDIA_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/"
-
-
-
-
-# If you have static files to be served from GCS
-# STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-# STATIC_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/static/"
-
- 
+UPLOAD_ROOT = os.path.join(BASE_DIR, 'media/reports/')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": f"redis://{config('REDIS_HOST', '127.0.0.1')}:{config('REDIS_PORT', cast=int, default=6379)}/1",
+        "LOCATION": config('AZURE_REDIS_CONNECTIONSTRING'),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "TIMEOUT": 300,
@@ -178,7 +144,6 @@ REST_FRAMEWORK = {
 
 SESSION_COOKIE_AGE = 7200
 SESSION_SAVE_EVERY_REQUEST = True
-
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = 'Lax'
@@ -186,7 +151,3 @@ CSRF_COOKIE_SAMESITE = 'Lax'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
-
-REDIS_HOST = config('REDIS_HOST', default='127.0.0.1')
-REDIS_PORT = config('REDIS_PORT', default=6379)
-
