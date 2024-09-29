@@ -1,6 +1,8 @@
 
 # use for production only
 
+keys/
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
