@@ -43,7 +43,7 @@ Follow these steps to run the project locally
    cd REPO_DIRECTORY
    ```
 
-# Django Backend 
+## Django Backend 
 
 This project is a Django-based backend for managing diabetes patient data, providing user authentication, patient data handling, and integration with machine learning models for outcome predictions and recommendations.
 ### 1. Clone the repository
@@ -74,8 +74,8 @@ python manage.py createsuperuser
  ```bash
 python manage.py runserver
 ```
-# REACT FRONTEND 
-## Prerequisites
+## REACT FRONTEND 
+### Prerequisites
 - Node.js (v14.x or later)
 - npm (v6.x or later) or yarn.
 
