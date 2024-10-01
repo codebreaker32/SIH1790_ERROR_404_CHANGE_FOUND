@@ -30,8 +30,8 @@ This README provides an overview of the project, including team details, relevan
 - **HARSHDIP SAHA** - 2023UCA1897 - [@HARSHDIPSAHA](https://github.com/HARSHDIPSAHA)
 - **AMAN BIHARI** - 2023UCA1910 - [@CODEBREAKER32](https://github.com/CODEBREAKER32)
 
-**Live Deployment:** [View Deployment](https://willowy-toffee-89c6b8.netlify.app/)
-  (backend deployment is removed due to insufficient aws credits)
+**Live Deployment:** [View Deployment](https://shiny-marigold-f7aa06.netlify.app/)
+  (backend deployment is removed due to insufficient azure credits)
 
   
 **Run locally**
