@@ -30,6 +30,19 @@ This README provides an overview of the project, including team details, relevan
 - **HARSHDIP SAHA** - 2023UCA1897 - [@HARSHDIPSAHA](https://github.com/HARSHDIPSAHA)
 - **AMAN BIHARI** - 2023UCA1910 - [@CODEBREAKER32](https://github.com/CODEBREAKER32)
 
+**TECHNOLOGIES USED** :- <br>
+*1. DJANGO* <br>
+*2. REACT JS* <br>
+*3. Google Cloud* <br>
+*4. MySQL* <br>
+*5. Hugging Face's GFGAN* <br>
+*6. MATPLOTLIB* <br>
+*7. OPENCV* <br>
+*8. Google Cloud Vision API* <br>
+*9. Azure Blob Storage* <br>
+*10. Redis* <br>
+
+
 **Live Deployment:** [View Deployment](https://shiny-marigold-f7aa06.netlify.app/)
   (backend deployment is removed due to insufficient azure credits)
 
