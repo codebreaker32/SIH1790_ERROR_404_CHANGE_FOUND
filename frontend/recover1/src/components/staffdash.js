@@ -232,6 +232,13 @@ const StaffDashboard = () => {
         >
           <h2>How to Use the System</h2>
           <p>Follow the instructions to utilize the features effectively.</p>
+	  <p><a href ="https://youtu.be/ocWosSs4PYA">YOUTUBE VIDEO FOR FURTHER INSTRUCTIONS</a></p>
+	   <ul className="instructions-list">
+            <li>View the missing persons reports by clicking "View Missing Reports".</li>
+            <li>Analyze the camera feed for potential matches by clicking "View Camera Feed".</li>
+            <li>If a match is found, verify the match and notify the police.</li>
+            <li>You can always access this help section by clicking "How to Use".</li>
+          </ul>
           <button className="close-modal-btn" onClick={closeHowToUseModal}>Close</button>
         </Modal>
       </div>

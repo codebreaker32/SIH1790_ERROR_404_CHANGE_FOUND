@@ -15,10 +15,13 @@ const UserDashboard = () => {
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
   const [isImageRequired, setIsImageRequired] = useState(false);
-  const [isGenderFieldVisible, setIsGenderFieldVisible] = useState(false); // State to manage gender field visibility
-  const [isReportModalOpen, setIsReportModalOpen] = useState(false); // State for report submission modal
+  const [isGenderFieldVisible, setIsGenderFieldVisible] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
-  // Initialize reports with Harshdip's details and image
+  // Counters for report IDs
+  const [personCounter, setPersonCounter] = useState(2); // Starts from PERSON_2
+  const [objectCounter, setObjectCounter] = useState(1); // Starts from OBJECT_1
+
   const [reports, setReports] = useState([
     {
       id: 'PERSON_1',
@@ -26,7 +29,7 @@ const UserDashboard = () => {
       age: 19,
       phoneNumber: '9228182636',
       gender: 'male',
-      image: 'harshdip.jpg', // Add the path to Harshdip's image
+      image: 'harshdip.jpg',
       reportType: 'missing_person',
       description: 'Wearing a red coloured t shirt with brown cargo',
       location: 'near stall no. 48',
@@ -45,14 +48,23 @@ const UserDashboard = () => {
       return;
     }
 
-    // Use a fixed report ID for the new report
+    // Generate report ID based on the report type
+    let newReportId = '';
+    if (reportType === 'missing_person') {
+      newReportId = `PERSON_${personCounter}`;
+      setPersonCounter((prev) => prev + 1); // Increment person counter
+    } else if (reportType === 'missing_item') {
+      newReportId = `OBJECT_${objectCounter}`;
+      setObjectCounter((prev) => prev + 1); // Increment object counter
+    }
+
     const newReport = {
-      id: 'PERSON_2', // Fixed report ID
+      id: newReportId,
       name,
       age,
       phoneNumber,
       gender: isGenderFieldVisible ? gender : '',
-      image: URL.createObjectURL(image), // Create a URL for the uploaded image
+      image: URL.createObjectURL(image),
       reportType,
       description,
       location,
@@ -77,10 +89,9 @@ const UserDashboard = () => {
     const selectedType = e.target.value;
     setReportType(selectedType);
     setIsImageRequired(selectedType === 'missing_person');
-    setIsGenderFieldVisible(selectedType === 'missing_person'); // Show gender field for missing person
+    setIsGenderFieldVisible(selectedType === 'missing_person');
   };
 
-  // Open and close the logout modal
   const openLogoutModal = () => setIsLogoutModalOpen(true);
   const closeLogoutModal = () => setIsLogoutModalOpen(false);
   const handleLogout = () => {
@@ -101,7 +112,7 @@ const UserDashboard = () => {
 
   return (
     <div className="user-dashboard">
-      <h1>User Dashboard</h1>
+      <h1>USER DASHBOARD</h1>
 
       {/* File a Missing Report Section */}
       <div className="file-report-section">
@@ -253,17 +264,19 @@ const UserDashboard = () => {
         </Modal>
       </div>
 
-      {/* Report Submission Confirmation Modal */}
+      {/* Report Submission Modal */}
       <Modal
         isOpen={isReportModalOpen}
         onRequestClose={() => setIsReportModalOpen(false)}
-        contentLabel="Report Submitted"
+        contentLabel="Report Filed"
         className="modal-content"
         overlayClassName="modal-overlay"
       >
-        <h2>Report Submitted</h2>
-        <p>Your report has been filed successfully!</p>
-        <button onClick={() => setIsReportModalOpen(false)}>Close</button>
+        <h2>Report Filed Successfully</h2>
+        <p>Your missing report has been submitted.</p>
+        <button onClick={() => setIsReportModalOpen(false)} className="close-btn">
+          Close
+        </button>
       </Modal>
     </div>
   );

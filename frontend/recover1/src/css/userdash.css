@@ -1,12 +1,12 @@
 body{
-	background-repeat: repeat-y; /* Repeat the image vertically */
+        background-repeat: repeat-y; /* Repeat the image vertically */
   background-size: cover; /* Ensure the image covers the entire width of the screen */
   background-attachment: scroll;
   }
 
 .user-dashboard {
     max-width: 1000px;
-    margin: 700px auto 50px auto;
+    margin: 1000px auto 50px auto;
     padding: 40px;
     background-color: rgba(255, 255, 255, 0.7);
     border-radius: 20px;
