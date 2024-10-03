@@ -1,0 +1,10 @@
+body {
+    transform: scale(0.67); /* Scale down the entire body */
+    transform-origin: center center; /* Set the origin to the center of the screen */
+    width: 100%; /* Ensure full-width scaling */
+    height: 100%; /* Ensure full-height scaling */
+    overflow-x: hidden; /* Hide horizontal overflow */
+    display: flex; /* Flexbox to center the body content */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+}

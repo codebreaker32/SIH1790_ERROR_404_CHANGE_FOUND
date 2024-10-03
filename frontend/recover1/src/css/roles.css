@@ -1,0 +1,97 @@
+body {
+  font-family: 'Arial', sans-serif;
+   background-image: url('bg.jpg');
+   background-size: cover; /* Covers the entire area */
+  background-position: center; /* Centers the image */
+  background-repeat: no-repeat;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.roles-container {
+  text-align: center;
+  background-color:rgba(255, 255, 255, 0.85);
+  padding: 40px;
+  border-radius: 12px; /* Slightly larger border radius */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Deeper shadow */
+  max-width: 500px;
+  width: 100%;
+ margin: 0 auto; 
+  transition: transform 0.3s; /* Animation on hover */
+}
+
+.roles-container:hover {
+  transform: translateY(-5px); /* Slight lift effect on hover */
+}
+
+.main-heading {
+  font-size: 36px; /* Increased font size */
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #00796b; /* Teal color */
+}
+
+.sub-heading {
+  font-size: 28px; /* Increased font size */
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #455a64; /* Darker gray */
+}
+
+.login-options {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.staff-login {
+  width: 220px; /* Slightly wider buttons */
+  padding: 12px 20px;
+  margin: 10px;
+  font-size: 18px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s; /* Added transform on hover */
+        background-color: #ff9800;
+}
+.staff-login:hover {
+  background-color: #fb8c00; /* Darker orange on hover */
+  transform: translateY(-2px); /* Lift effect on hover */
+}
+
+.file-missing-button {
+width: 220px; /* Slightly wider buttons */
+  padding: 12px 20px;
+  margin: 10px;
+  font-size: 18px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s; /* Added transform on hover */
+  background-color: #f44336; /* Red background for File Missing Report */
+}
+
+.file-missing-button:hover {
+  background-color: #e53935; /* Darker red on hover */
+}
+
+.login-button:focus {
+  outline: none;
+}
+
+@media (max-width: 600px) {
+  .main-heading, .sub-heading {
+    font-size: 24px; /* Responsive font sizes */
+  }
+
+  .login-button {
+    width: 180px; /* Responsive button size */
+  }
+}
