@@ -43,7 +43,7 @@ This README provides an overview of the project, including team details, relevan
 *10. Redis* <br>
 
 
-**Live Deployment:** [View Deployment](https://identification002.netlify.app/)
+**Live Deployment:** [View Deployment](https://missing-person-identification.netlify.app/)
   (backend deployment is removed due to insufficient azure credits)
 
   
